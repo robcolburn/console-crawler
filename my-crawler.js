@@ -55,8 +55,9 @@ function traverseSite () {
 			console.log(completed + ". " + "Error: No result");
 		}
 		else if (!$) {
-			console.log(completed + ". " + result.uri);
+			console.log(completed + ". " + result.statusCode + ": " + result.uri);
 			console.log("Error: Failed to load jQuery object");
+			// console.log(result);
 		}
 		else {
 			onSuccess(result, $);
@@ -71,7 +72,7 @@ function traverseSite () {
 	 *   A jQuery instance scoped to the server-side DOM of the page
 	 */
 	function onSuccess (result, $) {
-		console.log(completed + ". " + result.uri);
+		console.log(completed + ". " + result.statusCode + ": " + result.uri);
 
 		var counter = 0;
 		// 6. Gather up the links on this page, and queue them for crawling
