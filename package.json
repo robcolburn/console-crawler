@@ -1,0 +1,16 @@
+{
+    "name": "my-crawler",
+    "version": "0.0.1",
+    "description": "My crawler",
+    "keywords": [
+    ],
+    "dependencies": {
+       "crawler": "0.2.5"
+    },
+    "engines": [
+        "node >=0.6.x"
+    ],
+    "directories": {
+        "lib": "lib"
+    }
+}
