@@ -44,7 +44,7 @@ function traverseSite () {
 		totalCounter--;
 		completed++;
 		if (error) {
-			if (error.length && error[0].message) {
+			if (error.length && error[0] && error[0].message) {
 				console.log(completed + ". " + "Error", error[0].message);
 			}
 			else {
