@@ -1,11 +1,17 @@
 {
     "name": "my-crawler",
     "version": "0.0.1",
-    "description": "My crawler",
+    "description": "A simple web crawler that keeps to the domain",
     "keywords": [
     ],
+    "repository" : {
+        "type" : "git",
+        "url" : "http://github.com/robcolburn/my-crawler.git"
+    },
     "dependencies": {
-       "crawler": "0.2.5"
+       "crawler": "0.2.5",
+       "optimist": "0.6.0",
+       "better-console": "0.2.2"
     },
     "engines": [
         "node >=0.6.x"

@@ -1,34 +1,36 @@
+#!/usr/bin/env node
 var Crawler = require("crawler").Crawler;
-
+var console = require('better-console');
 // 1. Parse the URL from the Arguments
-var site = '';
-var maxConnections = 10;
-process.argv.forEach(function (val, index, array) {
-	if (index === 2) {
-		site = val;
-	}
-});
-if (site) {
-	traverseSite(site);
-}
-else {
-	console.log('What URL shall I traverse?');
-}
+var argv = require('optimist')
+    .usage([
+      'Traverse a site.',
+      'Usage: $0 http://example.com',
+      'Usage: $0 http://example.com -max=10'
+    ].join('\n'))
+    .demand(1)
+    .default('max', 10)
+    .argv;
+var MAX_CONNECTIONS = argv.max;
+var SITES = argv._;
 
-function traverseSite () {
+SITES.forEach(traverseSite);
+
+function traverseSite (site) {
+	console.info("Crawling… ", site);
 	// 2. Set-up the Crawler
-	var c = new Crawler({
-		maxConnections: maxConnections,
+	var crawler = new Crawler({
+		maxConnections: MAX_CONNECTIONS,
 		callback: onResponse
 	});
 	var uris = {site: true};
 	var isSite = new RegExp(site);
 	var stripAnchors = new RegExp("#.+");
-	var totalCounter = 1;
-	var completed = 1;
+	var queueLength = 1;
+	var completed = 0;
 
 	// 3. Queue up the URL as the first one to crawl
-	c.queue(site);
+	crawler.queue(site);
 
 	// 4. Handle any Errors that come through
 	// TODO: Need to find a way to know what URL we're talking about
@@ -41,23 +43,23 @@ function traverseSite () {
 	 *   A jQuery instance scoped to the server-side DOM of the page
 	 */
 	function onResponse (error, result, $) {
-		totalCounter--;
+		queueLength--;
 		completed++;
 		if (error) {
 			if (error.length && error[0] && error[0].message) {
-				console.log(completed + ". " + "Error", error[0].message);
+				console.error(completed + ". " + "Error", error[0].message);
 			}
 			else {
-				console.log(completed + ". " + "Error", error);
+				console.error(completed + ". " + "Error", error);
 			}
 		}
 		else if (!result) {
-			console.log(completed + ". " + "Error: No result");
+			console.error(completed + ". " + "Error: No result");
 		}
 		else if (!$) {
-			console.log(completed + ". " + result.statusCode + ": " + result.uri);
-			console.log("Error: Failed to load jQuery object");
-			// console.log(result);
+			console.error(completed + ". " + result.statusCode + ": " + result.uri);
+			console.error("Error: Failed to load jQuery object");
+			// console.error(result);
 		}
 		else {
 			onSuccess(result, $);
@@ -72,20 +74,25 @@ function traverseSite () {
 	 *   A jQuery instance scoped to the server-side DOM of the page
 	 */
 	function onSuccess (result, $) {
-		console.log(completed + ". " + result.statusCode + ": " + result.uri);
+		console.info(completed + ". " + result.statusCode + ": " + result.uri);
 
-		var counter = 0;
+		var numLinks = 0;
 		// 6. Gather up the links on this page, and queue them for crawling
-		$("a").each(function(index,a) {
-			var uri = a.href.replace(stripAnchors, '');
-			if (!uris[uri] && uri.match(isSite)) {
-				c.queue(uri);
+		$("a").get().forEach(function(anchor) {
+			var uri = anchor.href.replace(stripAnchors, '');
+			if (!uris[uri] && isSite.test(uri)) {
+				crawler.queue(uri);
 				uris[uri] = true;
-				counter++;
-				totalCounter++;
+				numLinks++;
+				queueLength++;
 			}
 		});
-		console.log("Added", counter, "to the queue of", totalCounter, "links");
+		if (numLinks) {
+			console.info("Added", numLinks, "to the queue of", queueLength, "links");
+		}
+		else {
+			console.info("No links to add");
+		}
 	}
 }
 
