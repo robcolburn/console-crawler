@@ -40,7 +40,8 @@ tarantula.on('uris', function (task, newCount) {
 	console.log(
 		'V:' + tarantula.visited,
 		'T:' + tarantula.uris.length,
-		'Q:' +  (tarantula.uris.length - tarantula.visited),
+		'Q:' + (tarantula.uris.length - tarantula.visited),
+		'A:' + tarantula.legs.active,
 		'+' + newCount
 	);
 });
