@@ -3,14 +3,13 @@ Console Crawler
 
 A Node app to crawls a given web site.
 
-Quick Set-Up
------
+### Quick Set-Up
 1. This is a Node app, so you'll need node/npm to run it.  
 2. Clone down the repo
 3. Install the dependencies `npm install`.
 4. Fire up the crawler.
 
-Copy-Paste Set-Up
+### Or, Copy-Paste
 -----
 ```bash
 git clone https://github.com/robcolburn/console-crawler;
