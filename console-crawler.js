@@ -2,7 +2,7 @@
 var Tarantula = require('tarantula');
 var console = require('better-console');
 // 1. Parse the URL from the Arguments
-var argv = require('optimist')
+var argv = require('yargs')
     .usage([
 			'Traverse a site.',
 			'Usage: $0 http://example.com',

@@ -8,7 +8,7 @@
         "phantom",
         "phantomjs"
     ],
-    "version": "0.1.1",
+    "version": "0.2.0",
     "author": "Rob Colburn <rob@robcolburn.com> (http://robcolburn.com)",
     "repository" : {
         "type" : "git",
@@ -16,8 +16,8 @@
     },
     "bin": "./console-crawler.js",
     "dependencies": {
-       "tarantula": "^0.1.0",
-       "optimist": "0.6.0",
-       "better-console": "0.2.2"
+       "tarantula": "^0.2.0",
+       "yargs": "^1.2.1",
+       "better-console": "^0.2.2"
     }
 }
